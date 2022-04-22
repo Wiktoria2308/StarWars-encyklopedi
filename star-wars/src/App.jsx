@@ -6,7 +6,9 @@ import Films from './pages/Films';
 import HomePage from './pages/HomePage'
 import NotFound from './pages/NotFound'
 import Film from './pages/Film';
-// import People from './pages/People'
+import './index.css';
+import Character from './pages/Character'
+import Characters from './pages/Characters'
 
 const App = () => {
 
@@ -19,6 +21,8 @@ const App = () => {
 				<Route path="/" element={<HomePage />} />
 				<Route path="/films" element={<Films />} />
 				<Route path="/films/:id" element={<Film />} />
+				<Route path="/people" element={<Characters />} />
+				<Route path="/people/:id" element={<Character />} />
 				{/* <Route path='/people' element={<People />} /> */}
 				<Route path="*" element={<NotFound />} />
 				{/* <Route path='/todos' element={<TodosPage />} /> */}

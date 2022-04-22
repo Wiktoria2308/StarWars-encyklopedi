@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import StarWarsAPI from '../services/StarWarsAPI'
-import CardGroup from 'react-bootstrap/CardGroup'
 import Card from 'react-bootstrap/Card'
 import CardText from 'react-bootstrap/Card'
 import CardBody from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
 
 
 const Films = () => {
@@ -18,33 +19,35 @@ const Films = () => {
         setFilms(data);
 	}
 
-
 	useEffect(() => {
 		getFilms()
 	}, [])
 
 	return (
 		<>
-			<h1>Films</h1>
+			<h1 className="films-heading">Films</h1>
 
 			{films.length > 0 && (
-				<CardGroup className="filmslist">
-					{films.map(film =>
-						<Card className="film" key={film.episode_id}>
-                            <Card.Img variant="top" src=""/>
+				
+				 <Row xs={1} md={2} lg={3} className="filmslist">
+					{films.map((film, index) =>
+					<Col key={++index}>
+						<Card className="film" style={{ width: '22rem' }}>
                             <CardBody>
-                            <Card.Title>{film.title}</Card.Title>
+                            <Card.Title className="film-title">{film.title}</Card.Title>
+							
                             <CardText className="film-info">
-                            <p>Episode {film.episode_id}</p>
-                            <p>Released {film.release_date}</p>
+                            <p className="film-id">Episode {film.episode_id}</p>
+                            <p className="film-release">Released {film.release_date}</p>
                             <p>{film.characters.length} characters</p>
                             </CardText>
-                            <Button variant="primary" as={Link} to={`/films/${film.episode_id}`}>Read more</Button>
-                            </CardBody>
-							
+							<Button variant="primary" as={Link} to={`/films/${++index}`} className="film-readmore">Read more</Button>
+							</CardBody>
 						</Card>
+						</Col>
 					)}
-				</CardGroup>
+				</Row>
+				
 			)} 
 
 			{films.length === 0 && (

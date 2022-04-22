@@ -11,7 +11,6 @@
  const getFilms = async () => {
 	try {
 		const response = await axios.get(`${BASE_URL}/films`)
-    console.log(response.data.results)
 		return response.data.results
 	} catch (err) {
 		return {
@@ -21,17 +20,26 @@
 }
 
  /**
+  * Get all films
+  */
+  const getCharacters = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/people`)
+      return response.data.results
+    } catch (err) {
+      return {
+        message: err.message,
+      }
+    }
+  }
+ /**
   * Get one film by id
   */
 
   const getFilm = async (id) => {
     try {
-      console.log("id", id)
-      const response = await axios.get(`${BASE_URL}/films`)
-      const results = response.data.results;
-      const findId = results.find( film => film.episode_id === id);
-      console.log("find", results)
-      return findId
+      const response = await axios.get(`${BASE_URL}/films/${id}`)
+      return response.data
     } catch (err) {
       return {
         message: err.message,
@@ -39,6 +47,20 @@
     }
   }
 
+ /**
+  * Get one character by id
+  */
+
+  const getCharacter = async (id) => {
+    try {
+      const response = await axios.get(`${BASE_URL}/people/${id}`)
+        return response.data
+    } catch (err) {
+      return {
+        message: err.message,
+      }
+    }
+  }
 
 
  /**
@@ -75,7 +97,9 @@
  // eslint-disable-next-line import/no-anonymous-default-export
  export default {
         getFilms,
-        getFilm
+        getFilm,
+        getCharacter,
+        getCharacters
         // getPeople
     //  getTodos,
     //  createTodo,

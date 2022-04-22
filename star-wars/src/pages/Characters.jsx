@@ -1,54 +1,60 @@
-// import { useEffect, useState } from 'react'
-// import ListGroup from 'react-bootstrap/ListGroup'
-// import { Link } from 'react-router-dom'
-// import StarWarsAPI from '../services/StarWarsAPI'
+import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
+import StarWarsAPI from '../services/StarWarsAPI'
+import Card from 'react-bootstrap/Card'
+import CardText from 'react-bootstrap/Card'
+import CardBody from 'react-bootstrap/Card'
+import Button from 'react-bootstrap/Button'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
 
-// const People = () => {
-// 	const [characters, setCharacters] = useState([])
 
-// 	const getPeople = async () => {
-// 		// Get todos from api
-// 		const data = await StarWarsAPI.getPeople()
+const Characters = () => {
+	const [characters, setCharacters] = useState([])
 
-// 		// sort alphabetically by title
-// 		// data.sort((a,b) => a.title.localeCompare(b.title))
+	const getCharacters = async () => {
 
-// 		// sort by completed status
-// 		// data.sort((a,b) => a.completed - b.completed)
+		const data = await StarWarsAPI.getCharacters()
+      
+        setCharacters(data);
+	}
 
-// 		// update todos state
-// 		setCharacters(data)
-// 	}
+	useEffect(() => {
+		getCharacters()
+	}, [])
 
-// 	// Get todos from api when component is first mounted
-// 	useEffect(() => {
-// 		getPeople()
-// 	}, [])
+	return (
+		<>
+			<h1 className="films-heading">People</h1>
 
-// 	return (
-// 		<>
-// 			<h1>People</h1>
+			{characters.length > 0 && (
+				
+				 <Row xs={1} md={2} lg={3} className="filmslist">
+					{characters.map((character, index) =>
+					<Col key={++index}>
+						<Card className="film" style={{ width: '22rem' }}>
+                            <CardBody>
+                            <Card.Title className="film-title">{character.name}</Card.Title>
+							
+                            <CardText className="film-info">
+                            <p className="film-id">Gender {character.gender}</p>
+                            <p className="film-release">Born {character.birth_year}</p>
+                            <p>In {character.films.length}</p>
+                            </CardText>
+							<Button variant="primary" as={Link} to={`/people/${++index}`} className="film-readmore">Read more</Button>
+							</CardBody>
+						</Card>
+						</Col>
+					)}
+				</Row>
+				
+			)} 
 
-// 			{/* {people.length > 0 && ( */}
-// 				<ListGroup className="peoplelist">
-// 					{characters.map(character =>
-// 						<ListGroup.Item
-// 							action
-// 							as={Link}
-// 							// key={person.id}
-// 							// to={`/films/${film.id}`}
-// 						>
-// 							{character.name}
-// 						</ListGroup.Item>
-// 					)}
-// 				</ListGroup>
-// 			{/* )} */}
+			{characters.length === 0 && (
+				<p className="status">No films!</p>
+			)}
+		</>
+	)
+}
 
-// 			{/* {todos.length === 0 && (
-// 				<p className="status">No todos 🥳!</p>
-// 			)} */}
-// 		</>
-// 	)
-// }
-
-// export default People;
+export default Characters;
