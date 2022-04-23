@@ -7,12 +7,13 @@ import Button from 'react-bootstrap/Button'
 import { Link } from 'react-router-dom'
 import Table from 'react-bootstrap/Table'
 import ListGroup from 'react-bootstrap/ListGroup'
+import { useNavigate } from "react-router-dom";
 
 
 const Film = () => {
 	const [film, setFilm] = useState()
 	const { id } = useParams()
-	
+	const navigate = useNavigate();
 	/**
  * Extract ID from SWAPI url
  */
@@ -85,7 +86,7 @@ const Film = () => {
     						</tr>
 						</tbody>
 					   </Table>
-					   <Button variant="primary" as={Link} to={`/films`} className="film-goback">{`<<`} Go back</Button>
+					   <Button variant="primary" onClick={() => navigate(-1)} className="film-goback">{`<<`} Go back</Button>
 					   </CardBody>
 				   </Card>
 				  

@@ -58,3 +58,10 @@ padding: 10px;
     font-weight: 600;
 }
 
+.next-page {
+    width: 30%;
+}
+.button-container {
+    display: flex;
+    justify-content: space-between;
+}

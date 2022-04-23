@@ -7,13 +7,13 @@ import Button from 'react-bootstrap/Button'
 import { Link } from 'react-router-dom'
 import Table from 'react-bootstrap/Table'
 import ListGroup from 'react-bootstrap/ListGroup'
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 
 const Character = () => {
 	const [character, setCharacter] = useState()
 	const { id } = useParams() 
-    // const history = useNavigate();
+    const navigate = useNavigate();
 
 	const getCharacter = async (id) => {
 		const data = await StarWarsAPI.getCharacter(id)
@@ -99,7 +99,7 @@ const Character = () => {
     						</tr>
 						</tbody>
 					   </Table>
-					   <Button variant="primary" as={Link} to={`/films`}className="film-goback">{`<<`} Go back</Button>
+					   <Button variant="primary" onClick={() => navigate(-1)} className="film-goback">{`<<`} Go back</Button>
 					   </CardBody>
 				   </Card>
 				  
