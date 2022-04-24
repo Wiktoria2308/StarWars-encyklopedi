@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import StarWarsAPI from '../services/StarWarsAPI'
 import Card from 'react-bootstrap/Card'
@@ -7,6 +7,8 @@ import CardBody from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import Form from 'react-bootstrap/Form'
+import { useSearchParams } from 'react-router-dom'
 
 const Films = () => {
 	const [films, setFilms] = useState([])
@@ -14,16 +16,20 @@ const Films = () => {
 	const [allData, setAllData] = useState([])
 	const [pages, setPages] = useState(1);
 
-	const getFilms = async (page) => {
+	const [searchInput, setSearchInput] = useState('')
+	const [searchParams, setSearchParams] = useSearchParams()
+	const searchInputRef = useRef()
+	const query = searchParams.get('query')
 
-		const data = await StarWarsAPI.getFilms(page)
-      
-        setFilms(data);
-	}
-	const getFilmsAllData = async (page) => {
+	const searchFilms = async (searchQuery, page) => {
 
-		const data = await StarWarsAPI.getFilmsAllData(page)
-        setAllData(data);
+		setFilms([])
+		setAllData([]);
+		
+		const data = await StarWarsAPI.searchFilms(searchQuery, page)
+
+		setFilms(data.results)
+		setAllData(data);
 		if(data.count < 10) {
 			setPages(1)
 		}
@@ -31,15 +37,48 @@ const Films = () => {
 			setPages(Math.ceil(data.count/10));
 		}
 	}
+
+
+	const handleSubmit = async e => {
+		e.preventDefault()
+		if (!searchInput.length) {
+			return
+		}
+		setPage(1)
+		// set input value as query in URLSearchParams
+		setSearchParams({ query: searchInput })
+	}
+
+	const getFilms = async (page) => {
+
+		const data = await StarWarsAPI.getFilms(page)
+        setFilms(data.results);
+		setAllData(data)
+		if(data.count < 10) {
+			setPages(1)
+		}
+		else {
+			setPages(Math.ceil(data.count/10));
+		}
+	}
+
 	/**
     * Extract page number from SWAPI url
     */
 	 const getPageFromUrl = (url) => {
 		// eslint-disable-next-line no-unused-vars
-	if(url) {
-		const id = url.replace('https://swapi.dev/api/films/?page=', '')
-		return id
-	}
+	
+		if(url) {
+			const ifSearch = url.includes("search");
+			if(url && ifSearch) {
+				const id = url.replace(`https://swapi.dev/api/films/?search=${query}&page=`, '')
+				return id
+			}
+			else {
+				const id = url.replace('https://swapi.dev/api/films/?page=', '')
+				return id
+			}
+		}
 }
 
 const handlePreviousPage = () => {
@@ -59,13 +98,38 @@ const handleNextPage = () => {
 }
 
 	useEffect(() => {
-		getFilms(page)
-		getFilmsAllData(page)
-	}, [page])
+		if (!query) {
+			setSearchInput('')
+			getFilms(page)
+			return
+		}
+		
+		setSearchInput(query)
+		searchFilms(query, page)
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [query, page])
 
 	return (
 		<>
 			<h1 className="films-heading">Films</h1>
+
+			<Form onSubmit={handleSubmit}>
+				
+					<Form.Group className="mb-3" controlId="newTitle">
+						<Form.Label>🔎  Search Films</Form.Label>
+						<Form.Control
+							onChange={e => setSearchInput(e.target.value)}
+							placeholder="Search"
+							ref={searchInputRef}
+							required
+							type="text"
+							value={searchInput}
+						/>
+					</Form.Group>
+						<div>
+							<Button className="mb-3" variant="success" type="submit" disabled={!searchInput.length}>Search</Button>
+						</div>
+				</Form>
 
 			{films.length > 0 && (
 				<>

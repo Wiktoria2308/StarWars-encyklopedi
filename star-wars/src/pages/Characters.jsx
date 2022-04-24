@@ -28,8 +28,7 @@ const Characters = () => {
 		setCharacters([])
 		setAllData([]);
 		
-		const data = await StarWarsAPI.search(searchQuery, page)
-
+		const data = await StarWarsAPI.searchPeople(searchQuery, page)
 
 		setCharacters(data.results)
 		setAllData(data);
@@ -55,19 +54,13 @@ const Characters = () => {
 
 		const data = await StarWarsAPI.getCharacters(page)
 
-        setCharacters(data);
-	}
-
-	const getCharactersAllData = async (page) => {
-
-		const data = await StarWarsAPI.getCharactersAllData(page)
-        setAllData(data);
+        setCharacters(data.results);
+		setAllData(data)
 		if(data.count < 10) {
 			setPages(1)
 		}
 		else {
 			setPages(Math.ceil(data.count/10));
-			console.log("pages", pages)
 		}
 	}
 
@@ -75,17 +68,19 @@ const Characters = () => {
     * Extract page number from SWAPI url
     */
 	const getPageFromUrl = (url) => {
-            // eslint-disable-next-line no-unused-vars
+        // eslint-disable-next-line no-unused-vars
+		
+		if(url) {
 			const ifSearch = url.includes("search");
-			
-		if(url && ifSearch) {
-			const id = url.replace(`https://swapi.dev/api/people/?search=${query}&page=`, '')
-			return id
-		}
-		else {
-			const id = url.replace('https://swapi.dev/api/people/?page=', '')
-			return id
-		}
+			if(url && ifSearch) {
+				const id = url.replace(`https://swapi.dev/api/people/?search=${query}&page=`, '')
+				return id
+			}
+			else {
+				const id = url.replace('https://swapi.dev/api/people/?page=', '')
+				return id
+			}
+		}	
     }
 
 	const handlePreviousPage = () => {
@@ -109,7 +104,6 @@ const Characters = () => {
 		if (!query) {
 			setSearchInput('')
 			getCharacters(page)
-		    getCharactersAllData(page)
 			return
 		}
 		
@@ -141,8 +135,6 @@ const Characters = () => {
 				</Form>
 
 		
-
-
 			{characters.length > 0 &&  (
 				<>
 				 <Row xs={1} md={2} lg={3} className="filmslist mb-4">

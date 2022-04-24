@@ -11,7 +11,7 @@
  const getFilms = async (page) => {
 	try {
 		const response = await axios.get(`${BASE_URL}/films/?page=${page}`)
-		return response.data.results
+		return response.data
 	} catch (err) {
 		return {
 			message: err.message,
@@ -19,32 +19,11 @@
 	}
 }
 
-const getFilmsAllData = async (page) => {
-  try {
-    const response = await axios.get(`${BASE_URL}/films/?page=${page}`)
-    return response.data
-  } catch (err) {
-    return {
-      message: err.message,
-    }
-  }
-}
 
  /**
   * Get all characters
   */
   const getCharacters = async (page) => {
-    try {
-      const response = await axios.get(`${BASE_URL}/people/?page=${page}`)
-      return response.data.results
-    } catch (err) {
-      return {
-        message: err.message,
-      }
-    }
-  }
-
-  const getCharactersAllData = async (page) => {
     try {
       const response = await axios.get(`${BASE_URL}/people/?page=${page}`)
       return response.data
@@ -55,7 +34,6 @@ const getFilmsAllData = async (page) => {
     }
   }
 
- 
  /**
   * Get one film by id
   */
@@ -86,10 +64,28 @@ const getFilmsAllData = async (page) => {
     }
   }
 
-
-export const search = async (query, page) => {
+/**
+ * 
+ *Search people using query and page number
+ */
+export const searchPeople = async (query, page) => {
   try {
   const response = await axios.get(`${BASE_URL}/people/?search=${query}&page=${page}`)
+	return response.data
+  }catch (err) {
+    return {
+      message: err.message,
+    }
+  }
+}
+
+/**
+ * 
+ *Search films using query and page number
+ */
+export const searchFilms = async (query, page) => {
+  try {
+  const response = await axios.get(`${BASE_URL}/films/?search=${query}&page=${page}`)
 	return response.data
   }catch (err) {
     return {
@@ -105,8 +101,7 @@ export const search = async (query, page) => {
         getFilm,
         getCharacter,
         getCharacters,
-        getCharactersAllData,
-        getFilmsAllData,
-        search
+        searchPeople,
+        searchFilms
  }
  
