@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import StarWarsAPI from '../services/StarWarsAPI'
 import Card from 'react-bootstrap/Card'
@@ -7,6 +7,8 @@ import CardBody from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import Form from 'react-bootstrap/Form'
+import { useSearchParams } from 'react-router-dom'
 
 
 const Characters = () => {
@@ -14,22 +16,59 @@ const Characters = () => {
 	const [page, setPage] = useState(1)
 	const [allData, setAllData] = useState([])
 	const [pages, setPages] = useState(1);
-	
 
+	const [searchInput, setSearchInput] = useState('')
+	const [searchParams, setSearchParams] = useSearchParams()
+	const searchInputRef = useRef()
+	const query = searchParams.get('query')
+
+
+	const searchPeople = async (searchQuery, page) => {
+
+		setCharacters([])
+		setAllData([]);
+		
+		const data = await StarWarsAPI.search(searchQuery, page)
+
+
+		setCharacters(data.results)
+		setAllData(data);
+		if(data.count < 10) {
+			setPages(1)
+		}
+		else {
+			setPages(Math.ceil(data.count/10));
+		}
+	}
+	const handleSubmit = async e => {
+		e.preventDefault()
+		if (!searchInput.length) {
+			return
+		}
+		
+		setPage(1)
+		// set input value as query in URLSearchParams
+		setSearchParams({ query: searchInput })
+	}
 
 	const getCharacters = async (page) => {
 
 		const data = await StarWarsAPI.getCharacters(page)
 
         setCharacters(data);
-		
 	}
 
 	const getCharactersAllData = async (page) => {
 
 		const data = await StarWarsAPI.getCharactersAllData(page)
         setAllData(data);
-		setPages(Math.ceil(data.count/10));
+		if(data.count < 10) {
+			setPages(1)
+		}
+		else {
+			setPages(Math.ceil(data.count/10));
+			console.log("pages", pages)
+		}
 	}
 
 	/**
@@ -37,8 +76,14 @@ const Characters = () => {
     */
 	const getPageFromUrl = (url) => {
             // eslint-disable-next-line no-unused-vars
-		if(url) {
-			const id = url.replace('https://swapi.dev/api/films/?page=', '')
+			const ifSearch = url.includes("search");
+			
+		if(url && ifSearch) {
+			const id = url.replace(`https://swapi.dev/api/people/?search=${query}&page=`, '')
+			return id
+		}
+		else {
+			const id = url.replace('https://swapi.dev/api/people/?page=', '')
 			return id
 		}
     }
@@ -60,17 +105,47 @@ const Characters = () => {
 	}
 
 	useEffect(() => {
-		getCharacters(page)
-		getCharactersAllData(page)
-	}, [page])
+		
+		if (!query) {
+			setSearchInput('')
+			getCharacters(page)
+		    getCharactersAllData(page)
+			return
+		}
+		
+		setSearchInput(query)
+		searchPeople(query, page)
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [query, page])
 
 	return (
 		<>
 			<h1 className="films-heading">People</h1>
+		
+				<Form onSubmit={handleSubmit}>
+				
+					<Form.Group className="mb-3" controlId="newTitle">
+						<Form.Label>🔎  Search People</Form.Label>
+						<Form.Control
+							onChange={e => setSearchInput(e.target.value)}
+							placeholder="Search"
+							ref={searchInputRef}
+							required
+							type="text"
+							value={searchInput}
+						/>
+					</Form.Group>
+						<div>
+							<Button className="mb-3" variant="success" type="submit" disabled={!searchInput.length}>Search</Button>
+						</div>
+				</Form>
 
-			{characters.length > 0 && (
+		
+
+
+			{characters.length > 0 &&  (
 				<>
-				 <Row xs={1} md={2} lg={3} className="filmslist">
+				 <Row xs={1} md={2} lg={3} className="filmslist mb-4">
 					{characters.map((character, index) =>
 					<Col key={++index}>
 						<Card className="film" style={{ width: '22rem' }}>
@@ -78,9 +153,9 @@ const Characters = () => {
                             <Card.Title className="film-title">{character.name}</Card.Title>
 							
                             <CardText className="film-info">
-                            <p className="film-id">Gender {character.gender}</p>
-                            <p className="film-release">Born {character.birth_year}</p>
-                            <p>In {character.films.length}</p>
+                            <p className="film-id"><span className="attribute">Gender</span> {character.gender}</p>
+                            <p className="film-release"><span className="attribute">Born</span> {character.birth_year}</p>
+                            <p><span className="attribute">In</span> {character.films.length} films</p>
                             </CardText>
 							<Button variant="primary" as={Link} to={`/people/${++index}`} className="film-readmore">Read more</Button>
 							</CardBody>
@@ -98,7 +173,7 @@ const Characters = () => {
 			
 
 			{characters.length === 0 && (
-				<p className="status">No films!</p>
+				<p className="status">No people!</p>
 			)}
 
 		</>

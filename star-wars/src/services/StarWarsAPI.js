@@ -87,6 +87,17 @@ const getFilmsAllData = async (page) => {
   }
 
 
+export const search = async (query, page) => {
+  try {
+  const response = await axios.get(`${BASE_URL}/people/?search=${query}&page=${page}`)
+	return response.data
+  }catch (err) {
+    return {
+      message: err.message,
+    }
+  }
+}
+
 
  // eslint-disable-next-line import/no-anonymous-default-export
  export default {
@@ -95,6 +106,7 @@ const getFilmsAllData = async (page) => {
         getCharacter,
         getCharacters,
         getCharactersAllData,
-        getFilmsAllData
+        getFilmsAllData,
+        search
  }
  

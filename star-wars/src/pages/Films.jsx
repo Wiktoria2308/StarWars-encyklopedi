@@ -37,7 +37,7 @@ const Films = () => {
 	 const getPageFromUrl = (url) => {
 		// eslint-disable-next-line no-unused-vars
 	if(url) {
-		const id = url.replace('https://swapi.dev/api/people/?page=', '')
+		const id = url.replace('https://swapi.dev/api/films/?page=', '')
 		return id
 	}
 }
@@ -69,7 +69,7 @@ const handleNextPage = () => {
 
 			{films.length > 0 && (
 				<>
-				 <Row xs={1} md={2} lg={3} className="filmslist">
+				 <Row xs={1} md={2} lg={3} className="filmslist mb-4">
 					{films.map((film, index) =>
 					<Col key={++index}>
 						<Card className="film" style={{ width: '22rem' }}>
@@ -77,9 +77,9 @@ const handleNextPage = () => {
                             <Card.Title className="film-title">{film.title}</Card.Title>
 							
                             <CardText className="film-info">
-                            <p className="film-id">Episode {film.episode_id}</p>
-                            <p className="film-release">Released {film.release_date}</p>
-                            <p>{film.characters.length} characters</p>
+                            <p className="film-id"><span className="attribute">Episode</span>{film.episode_id}</p>
+                            <p className="film-release"><span className="attribute">Released</span> {film.release_date}</p>
+                            <p><span className="attribute">{film.characters.length}</span> characters</p>
                             </CardText>
 							<Button variant="primary" as={Link} to={`/films/${++index}`} className="film-readmore">Read more</Button>
 							</CardBody>
