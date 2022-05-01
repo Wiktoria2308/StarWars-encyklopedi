@@ -22,13 +22,12 @@ const Characters = () => {
 	const searchInputRef = useRef()
 	const query = searchParams.get('query')
 
-
-	const searchPeople = async (searchQuery, page) => {
+	const searchPeople = async (searchQuery, pagee) => {
 
 		setCharacters([])
 		setAllData([]);
-		
-		const data = await StarWarsAPI.searchPeople(searchQuery, page)
+		setSearchParams({ query: searchInput, page: pagee })
+		const data = await StarWarsAPI.searchPeople(searchQuery, pagee)
 
 		setCharacters(data.results)
 		setAllData(data);
@@ -46,14 +45,21 @@ const Characters = () => {
 		}
 		
 		setPage(1)
+		setPages(1)
 		// set input value as query in URLSearchParams
-		setSearchParams({ query: searchInput })
+		setSearchParams({ query: searchInput, page: page })
 	}
 
-	const getCharacters = async (page) => {
+	const getCharacters = async (pagee) => {
 
-		const data = await StarWarsAPI.getCharacters(page)
-
+		const data = await StarWarsAPI.getCharacters(pagee)
+		if(query){
+			setSearchParams({ query: searchInput, page: page })
+		}
+		else {
+			setSearchParams({ page: page })
+		}
+		
         setCharacters(data.results);
 		setAllData(data)
 		if(data.count < 10) {
@@ -88,6 +94,7 @@ const Characters = () => {
 		if(previousPage) {
 			setPage(previousPage);
 			setCharacters(allData.results)
+			
 		}
 	}
 
@@ -96,6 +103,7 @@ const Characters = () => {
 		if(nextPage) {
 			setPage(nextPage);
 			setCharacters(allData.results)
+			
 		}
 	}
 
@@ -109,6 +117,7 @@ const Characters = () => {
 		
 		setSearchInput(query)
 		searchPeople(query, page)
+		
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [query, page])
 
@@ -143,7 +152,6 @@ const Characters = () => {
 						<Card className="film" style={{ width: '22rem' }}>
                             <CardBody>
                             <Card.Title className="film-title">{character.name}</Card.Title>
-							
                             <CardText className="film-info">
                             <p className="film-id"><span className="attribute">Gender</span> {character.gender}</p>
                             <p className="film-release"><span className="attribute">Born</span> {character.birth_year}</p>
