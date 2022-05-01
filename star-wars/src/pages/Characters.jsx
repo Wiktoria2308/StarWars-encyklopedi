@@ -7,8 +7,8 @@ import CardBody from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import Form from 'react-bootstrap/Form'
 import { useSearchParams } from 'react-router-dom'
+import Search from '../components/Search'
 
 
 const Characters = () => {
@@ -124,27 +124,18 @@ const Characters = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [query, page])
 
+	let props = {
+		searchInputRef : searchInputRef,
+		handleSubmit : handleSubmit,
+		searchInput : searchInput,
+		setSearchInput: setSearchInput
+		}
+
 	return (
 		<>
 			<h1 className="films-heading">People</h1>
-		
-				<Form onSubmit={handleSubmit}>
-				
-					<Form.Group className="mb-3" controlId="newTitle">
-						<Form.Label>🔎  Search People</Form.Label>
-						<Form.Control
-							onChange={e => setSearchInput(e.target.value)}
-							placeholder="Search"
-							ref={searchInputRef}
-							required
-							type="text"
-							value={searchInput}
-						/>
-					</Form.Group>
-						<div>
-							<Button className="mb-3" variant="success" type="submit" disabled={!searchInput.length}>Search</Button>
-						</div>
-				</Form>
+
+				<Search {...props} />
 
 		
 			{characters.length > 0 &&  (
