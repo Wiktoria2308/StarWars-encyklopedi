@@ -15,7 +15,7 @@ const Films = () => {
 	const [page, setPage] = useState(1)
 	const [allData, setAllData] = useState([])
 	const [pages, setPages] = useState(1);
-
+	const [searchResult, setSearchResult] = useState(null)
 	const [searchInput, setSearchInput] = useState('')
 	const [searchParams, setSearchParams] = useSearchParams()
 	const searchInputRef = useRef()
@@ -25,11 +25,13 @@ const Films = () => {
 
 		setFilms([])
 		setAllData([]);
-		
+		setSearchResult(null)
+		setSearchParams({ query: searchInput, page: page })
 		const data = await StarWarsAPI.searchFilms(searchQuery, page)
 
 		setFilms(data.results)
 		setAllData(data);
+		setSearchResult(data)
 		if(data.count < 10) {
 			setPages(1)
 		}
@@ -45,13 +47,20 @@ const Films = () => {
 			return
 		}
 		setPage(1)
+	    setPages(1)
 		// set input value as query in URLSearchParams
-		setSearchParams({ query: searchInput })
+		setSearchParams({ query: searchInput, page: page })
 	}
 
-	const getFilms = async (page) => {
+	const getFilms = async (pagee) => {
 
-		const data = await StarWarsAPI.getFilms(page)
+		const data = await StarWarsAPI.getFilms(pagee)
+		if(query){
+			setSearchParams({ query: searchInput, page: page })
+		}
+		else {
+			setSearchParams({ page: page })
+		}
         setFilms(data.results);
 		setAllData(data)
 		if(data.count < 10) {
@@ -101,6 +110,7 @@ const handleNextPage = () => {
 		if (!query) {
 			setSearchInput('')
 			getFilms(page)
+			setSearchResult(null)
 			return
 		}
 		
@@ -133,6 +143,11 @@ const handleNextPage = () => {
 
 			{films.length > 0 && (
 				<>
+				{searchResult && (
+				<div className="mt-1 mb-3">
+					<p>Showing search results for {query}...</p>
+					</div>
+					)}
 				 <Row xs={1} md={2} lg={3} className="filmslist mb-4">
 					{films.map((film, index) =>
 					<Col key={++index}>

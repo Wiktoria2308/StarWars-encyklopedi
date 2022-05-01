@@ -16,21 +16,23 @@ const Characters = () => {
 	const [page, setPage] = useState(1)
 	const [allData, setAllData] = useState([])
 	const [pages, setPages] = useState(1);
-
+	const [searchResult, setSearchResult] = useState(null)
 	const [searchInput, setSearchInput] = useState('')
 	const [searchParams, setSearchParams] = useSearchParams()
 	const searchInputRef = useRef()
 	const query = searchParams.get('query')
 
-	const searchPeople = async (searchQuery, pagee) => {
+	const searchPeople = async (searchQuery, page) => {
 
 		setCharacters([])
 		setAllData([]);
-		setSearchParams({ query: searchInput, page: pagee })
-		const data = await StarWarsAPI.searchPeople(searchQuery, pagee)
+		setSearchResult(null)
+		setSearchParams({ query: searchInput, page: page })
+		const data = await StarWarsAPI.searchPeople(searchQuery, page)
 
 		setCharacters(data.results)
 		setAllData(data);
+		setSearchResult(data)
 		if(data.count < 10) {
 			setPages(1)
 		}
@@ -112,6 +114,7 @@ const Characters = () => {
 		if (!query) {
 			setSearchInput('')
 			getCharacters(page)
+			setSearchResult(null)
 			return
 		}
 		
@@ -146,6 +149,12 @@ const Characters = () => {
 		
 			{characters.length > 0 &&  (
 				<>
+				{searchResult && (
+				<div className="mt-1 mb-3">
+					<p>Showing search results for {query}...</p>
+					</div>
+					)}
+
 				 <Row xs={1} md={2} lg={3} className="filmslist mb-4">
 					{characters.map((character, index) =>
 					<Col key={++index}>
