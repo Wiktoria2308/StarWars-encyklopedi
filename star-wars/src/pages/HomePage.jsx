@@ -1,12 +1,12 @@
-// import { Link } from 'react-router-dom'
+import darth from '../images/darthVader.jpeg'; 
 
 const HomePage = () => {
 	return (
-		<>
+		<div className="home-page">
 			<h1>Welcome to Star Wars Encyclopedia!</h1>
-
-			{/* <p>This link does not exist: <Link to="/not-found">Click here</Link></p> */}
-		</>
+			<img src={darth} alt="Darth Vader" />
+			
+		</div>
 	)
 }
 

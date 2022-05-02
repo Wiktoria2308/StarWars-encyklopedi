@@ -5,8 +5,8 @@ const Search = (props) => {
     return (
         <Form onSubmit={props.handleSubmit}>
 
-            <Form.Group className="mb-3" controlId="newTitle">
-                <Form.Label>🔎  Search People</Form.Label>
+            <Form.Group className="mb-3" controlId="newTitle" >
+                <Form.Label className="text-white">🔎  Search People</Form.Label>
                 <Form.Control
                     onChange={e => props.setSearchInput(e.target.value)}
                     placeholder="Search"

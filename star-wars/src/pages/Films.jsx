@@ -20,15 +20,15 @@ const Films = () => {
 	const [searchParams, setSearchParams] = useSearchParams()
 	const searchInputRef = useRef()
 	const query = searchParams.get('query')
+	const searchPage = searchParams.get('page')
 
 	const searchFilms = async (searchQuery, page) => {
 
 		setFilms([])
 		setAllData([]);
 		setSearchResult(null)
-		setSearchParams({ query: searchInput, page: page })
 		const data = await StarWarsAPI.searchFilms(searchQuery, page)
-
+		setPage(searchPage);
 		setFilms(data.results)
 		setAllData(data);
 		setSearchResult(data)
@@ -49,7 +49,7 @@ const Films = () => {
 		setPage(1)
 	    setPages(1)
 		// set input value as query in URLSearchParams
-		setSearchParams({ query: searchInput, page: page })
+		setSearchParams({ query: searchInput, page: 1 })
 	}
 
 	const getFilms = async (pagee) => {
@@ -96,6 +96,9 @@ const handlePreviousPage = () => {
 		setPage(previousPage);
 		setFilms(allData.results)
 	}
+	if(query && previousPage){
+		setSearchParams({ query: searchInput, page: previousPage })
+	}
 }
 
 const handleNextPage = () => {
@@ -103,6 +106,9 @@ const handleNextPage = () => {
 	if(nextPage) {
 		setPage(nextPage);
 		setFilms(allData.results)
+	}
+	if(query && nextPage){
+		setSearchParams({ query: searchInput, page: nextPage })
 	}
 }
 
@@ -115,9 +121,9 @@ const handleNextPage = () => {
 		}
 		
 		setSearchInput(query)
-		searchFilms(query, page)
+		searchFilms(query, searchPage)
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [query, page])
+	}, [query, page, searchPage])
 
 	let props = {
 		searchInputRef : searchInputRef,
@@ -136,7 +142,7 @@ const handleNextPage = () => {
 				<>
 				{searchResult && (
 				<div className="mt-1 mb-3">
-					<p>Showing search results for {query}...</p>
+					<p className='showResult'>Showing search results for {query}...</p>
 					</div>
 					)}
 				 <Row xs={1} md={2} lg={3} className="filmslist mb-4">
@@ -159,7 +165,7 @@ const handleNextPage = () => {
 				</Row>
 					<div className="button-container">
 				<Button variant="primary" onClick={handlePreviousPage}  className="next-page">Previous page</Button>
-				<p>Page <span>{page}</span><span> / {pages}</span></p>
+				<p className="pageStyle">Page <span>{page}</span><span> / {pages}</span></p>
 				<Button variant="primary" disabled={page === 0} onClick={handleNextPage}  className="next-page">Next page</Button>
 				</div>
 				</>

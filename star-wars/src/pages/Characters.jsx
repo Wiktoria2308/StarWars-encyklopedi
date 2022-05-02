@@ -21,15 +21,15 @@ const Characters = () => {
 	const [searchParams, setSearchParams] = useSearchParams()
 	const searchInputRef = useRef()
 	const query = searchParams.get('query')
+	const searchPage = searchParams.get('page')
 
 	const searchPeople = async (searchQuery, page) => {
 
 		setCharacters([])
 		setAllData([]);
 		setSearchResult(null)
-		setSearchParams({ query: searchInput, page: page })
 		const data = await StarWarsAPI.searchPeople(searchQuery, page)
-
+		setPage(searchPage);
 		setCharacters(data.results)
 		setAllData(data);
 		setSearchResult(data)
@@ -49,7 +49,7 @@ const Characters = () => {
 		setPage(1)
 		setPages(1)
 		// set input value as query in URLSearchParams
-		setSearchParams({ query: searchInput, page: page })
+		setSearchParams({ query: searchInput, page: 1 })
 	}
 
 	const getCharacters = async (pagee) => {
@@ -58,6 +58,7 @@ const Characters = () => {
 		if(query){
 			setSearchParams({ query: searchInput, page: page })
 		}
+		
 		else {
 			setSearchParams({ page: page })
 		}
@@ -96,7 +97,9 @@ const Characters = () => {
 		if(previousPage) {
 			setPage(previousPage);
 			setCharacters(allData.results)
-			
+		}
+		if(query && previousPage){
+			setSearchParams({ query: searchInput, page: previousPage })
 		}
 	}
 
@@ -105,7 +108,9 @@ const Characters = () => {
 		if(nextPage) {
 			setPage(nextPage);
 			setCharacters(allData.results)
-			
+		}
+		if(query && nextPage){
+			setSearchParams({ query: searchInput, page: nextPage })
 		}
 	}
 
@@ -117,12 +122,12 @@ const Characters = () => {
 			setSearchResult(null)
 			return
 		}
-		
+
 		setSearchInput(query)
-		searchPeople(query, page)
+		searchPeople(query, searchPage)
 		
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [query, page])
+	}, [query, page, searchPage])
 
 	let props = {
 		searchInputRef : searchInputRef,
@@ -142,7 +147,7 @@ const Characters = () => {
 				<>
 				{searchResult && (
 				<div className="mt-1 mb-3">
-					<p>Showing search results for {query}...</p>
+					<p className='showResult'>Showing search results for {query}...</p>
 					</div>
 					)}
 
@@ -165,7 +170,7 @@ const Characters = () => {
 				</Row>
 				<div className="button-container">
 				<Button variant="primary" onClick={handlePreviousPage}  className="next-page">Previous page</Button>
-				<p>Page <span>{page}</span><span> / {pages}</span></p>
+				<p className="pageStyle">Page <span>{page}</span><span> / {pages}</span></p>
 				<Button variant="primary" disabled={page === 0} onClick={handleNextPage}  className="next-page">Next page</Button>
 				</div>
 				</>
