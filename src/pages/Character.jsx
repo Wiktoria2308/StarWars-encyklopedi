@@ -9,6 +9,7 @@ import Table from "react-bootstrap/Table";
 import ListGroup from "react-bootstrap/ListGroup";
 import { useNavigate } from "react-router-dom";
 import LoadingSpinner from "../components/LoadingSpinner";
+import { getIdFromUrl } from '../helpers/IdfromURL'
 
 const Character = () => {
   const [character, setCharacter] = useState();
@@ -18,17 +19,6 @@ const Character = () => {
   const getCharacter = async (id) => {
     const data = await StarWarsAPI.getCharacter(id);
     setCharacter(data);
-  };
-  /**
-   * Extract ID from SWAPI url
-   */
-  const getIdFromUrl = (url) => {
-    // eslint-disable-next-line no-unused-vars
-    const [_endpoint, id] = url
-      .replace("https://swapi.dev/api/", "")
-      .slice(0, -1)
-      .split("/");
-    return id;
   };
 
   useEffect(() => {

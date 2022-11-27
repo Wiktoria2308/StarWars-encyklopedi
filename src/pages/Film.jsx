@@ -8,23 +8,14 @@ import { Link } from "react-router-dom";
 import Table from "react-bootstrap/Table";
 import ListGroup from "react-bootstrap/ListGroup";
 import { useNavigate } from "react-router-dom";
+import LoadingSpinner from "../components/LoadingSpinner";
+import { getIdFromUrl } from '../helpers/IdfromURL'
 
 const Film = () => {
   const [film, setFilm] = useState();
   const { id } = useParams();
   const navigate = useNavigate();
-  /**
-   * Extract ID from SWAPI url
-   */
 
-  const getIdFromUrl = (url) => {
-    // eslint-disable-next-line no-unused-vars
-    const [_endpoint, id] = url
-      .replace("https://swapi.dev/api/", "")
-      .slice(0, -1)
-      .split("/");
-    return id;
-  };
 
   const getFilm = async (id) => {
     const data = await StarWarsAPI.getFilm(id);
@@ -36,14 +27,13 @@ const Film = () => {
   }, [id]);
 
   if (!film) {
-    return <p>Loading...</p>;
+    return <LoadingSpinner />;
   }
 
   return (
     <>
       {!film.message && (
         <Card className="film">
-          {/* <Card.Img variant="top" src=""/> */}
           <CardBody className="film-body">
             <Card.Title className="film-title">{film.title}</Card.Title>
             <Card.Subtitle className="film-subtitle">Attributes</Card.Subtitle>
