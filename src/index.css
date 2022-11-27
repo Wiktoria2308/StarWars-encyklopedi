@@ -1,107 +1,111 @@
-@import url('https://fonts.googleapis.com/css2?family=Passion+One:wght@400;700;900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Passion+One:wght@400;700;900&display=swap");
 
 body {
-    background-image: url(../src/images/background.jpg);
+  background-image: url(../src/images/background.jpg);
 }
 .navbar {
-    background-color: rgb(0, 24, 73);
+  background-color: rgb(0, 24, 73);
 }
 .navbar-brand {
-    color: white !important;
+  color: white !important;
 }
 .home-page {
- text-align: center;
- font-family: 'Passion One', cursive;
- margin-top: 20px;
+  text-align: center;
+  font-family: "Passion One", cursive;
+  margin-top: 20px;
 }
-.home-page h1{
-    font-size: 50px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    color: yellow;
-    margin-bottom: 20px;
+.home-page h1 {
+  font-size: 50px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: yellow;
+  margin-bottom: 20px;
 }
 .home-page img {
-    margin: auto;
+  margin: auto;
 }
 
 .showResult {
-    color: white;
+  color: white;
 }
 
 .films-heading {
-    margin-bottom: 20px;
-    color: white;
+  margin-bottom: 20px;
+  color: white;
 }
 .navLinks {
-    color: white !important;
-    font-size: 20px;
+  color: white !important;
+  font-size: 20px;
 }
 
 .film-info {
-border: 0;
-padding: 10px;
+  border: 0;
+  padding: 10px;
 }
-.film-title, .character-title {
-    padding: 10px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
-    background-color: rgba(48, 48, 48, 0.125);
+.film-title,
+.character-title {
+  padding: 10px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+  background-color: rgba(48, 48, 48, 0.125);
 }
-.film-subtitle, .character-subtitle{
-    padding: 10px;
-    font-size: 22px;
+.film-subtitle,
+.character-subtitle {
+  padding: 10px;
+  font-size: 22px;
 }
 .film-id {
-    border-bottom: 2px solid rgba(0, 0, 0, 0.125);
-    padding-bottom: 5px;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.125);
+  padding-bottom: 5px;
 }
 .film-release {
-    border-bottom: 2px solid rgba(0, 0, 0, 0.125);
-    padding-bottom: 5px;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.125);
+  padding-bottom: 5px;
 }
 
 .film-readmore {
-    width: 40%;
-    margin-bottom: 10px;
-    margin-left: 10px;
+  width: 40%;
+  margin-bottom: 10px;
+  margin-left: 10px;
 }
 
-.film, .character {
-    margin-bottom: 30px;
-    border: 0;
-    width: 70%;
+.film,
+.character {
+  margin-bottom: 30px;
+  border: 0;
+  width: 70%;
 }
 .film-goback {
-    width: 20%;
-    margin-bottom: 20px;
-    margin-left: 20px;
+  width: 20%;
+  margin-bottom: 20px;
+  margin-left: 20px;
 }
 
-.film-links, .character-links {
-    padding: 10px;
-    font-size: 22px;
-    font-weight: 500;
-    padding-top: 20px;
-    margin-bottom: 0;
-    padding-bottom: 0;
-    border-bottom: 0;
+.film-links,
+.character-links {
+  padding: 10px;
+  font-size: 22px;
+  font-weight: 500;
+  padding-top: 20px;
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: 0;
 }
 .table {
-    border-bottom: white;
+  border-bottom: white;
 }
 
 .attribute {
-    font-weight: 600;
+  font-weight: 600;
 }
 
 .next-page {
-    width: 30%;
+  width: 30%;
 }
 .button-container {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 
 .pageStyle {
-    color: white !important;
+  color: white !important;
 }
