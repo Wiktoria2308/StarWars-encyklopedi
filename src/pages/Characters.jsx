@@ -10,6 +10,7 @@ import Col from "react-bootstrap/Col";
 import { useSearchParams } from "react-router-dom";
 import Search from "../components/Search";
 import LoadingSpinner from "../components/LoadingSpinner";
+import { getIdFromUrl } from '../helpers/IdfromURL'
 
 const Characters = () => {
   const [characters, setCharacters] = useState([]);
@@ -177,7 +178,7 @@ const Characters = () => {
                     <Button
                       variant="primary"
                       as={Link}
-                      to={`/people/${++index}`}
+                      to={`/people/${getIdFromUrl(character.url)}`}
                       className="film-readmore"
                     >
                       Read more

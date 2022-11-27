@@ -9,6 +9,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { useSearchParams } from "react-router-dom";
 import Search from "../components/Search";
+import { getIdFromUrl } from '../helpers/IdfromURL'
 
 const Films = () => {
   const [films, setFilms] = useState([]);
@@ -170,7 +171,7 @@ const Films = () => {
                     <Button
                       variant="primary"
                       as={Link}
-                      to={`/films/${++index}`}
+                      to={`/films/${getIdFromUrl(film.url)}`}
                       className="film-readmore"
                     >
                       Read more
