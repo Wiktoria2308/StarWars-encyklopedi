@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Passion+One:wght@400;700;900&display=swap');
 
 body {
-    background-image: url("http://wallpapercave.com/wp/pEeUsp1.jpg");
+    background-image: url(../src/images/background.jpg);
 }
 .navbar {
     background-color: rgb(0, 24, 73);
