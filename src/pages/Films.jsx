@@ -129,7 +129,8 @@ const handleNextPage = () => {
 		searchInputRef : searchInputRef,
 		handleSubmit : handleSubmit,
 		searchInput : searchInput,
-		setSearchInput: setSearchInput
+		setSearchInput: setSearchInput,
+		whoSearch: "Films"
 		}
 
 	return (

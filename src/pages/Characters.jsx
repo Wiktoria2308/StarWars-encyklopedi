@@ -9,7 +9,7 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import { useSearchParams } from 'react-router-dom'
 import Search from '../components/Search'
-
+import LoadingSpinner from '../components/LoadingSpinner'
 
 const Characters = () => {
 	const [characters, setCharacters] = useState([])
@@ -133,7 +133,12 @@ const Characters = () => {
 		searchInputRef : searchInputRef,
 		handleSubmit : handleSubmit,
 		searchInput : searchInput,
-		setSearchInput: setSearchInput
+		setSearchInput: setSearchInput,
+		whoSearch: "Characters"
+		}
+		
+		if (!characters) {
+			return <LoadingSpinner />
 		}
 
 	return (
@@ -178,7 +183,7 @@ const Characters = () => {
 			
 
 			{characters.length === 0 && (
-				<p className="status">No people!</p>
+				<p className="status">No characters!</p>
 			)}
 
 		</>
